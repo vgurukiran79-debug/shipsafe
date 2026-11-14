@@ -1,3 +1,4 @@
+import { MotionConfig, motion } from 'motion/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { TopBar } from './components/TopBar';
@@ -234,26 +235,34 @@ export default function App() {
   }, [workspace]);
 
   return (
-    <div className="min-h-screen bg-[#060B16] text-slate-100 flex">
-      <Sidebar
-        activePage={activePage}
-        onNavigate={setActivePage}
-        hasActiveScan={Boolean(activeScan)}
-        hasSelectedFinding={Boolean(selectedFinding)}
-        mobileOpen={mobileMenuOpen}
-        onCloseMobile={() => setMobileMenuOpen(false)}
-      />
-
-      <div className="flex-1 flex flex-col min-w-0">
-        <TopBar
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-[#060B16] text-slate-100 flex">
+        <Sidebar
           activePage={activePage}
-          workspace={workspace}
-          activeScan={activeScan}
-          onOpenMobileMenu={() => setMobileMenuOpen(true)}
-          onQuickScan={() => setActivePage('scan')}
+          onNavigate={setActivePage}
+          hasActiveScan={Boolean(activeScan)}
+          hasSelectedFinding={Boolean(selectedFinding)}
+          mobileOpen={mobileMenuOpen}
+          onCloseMobile={() => setMobileMenuOpen(false)}
         />
 
-        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-7 max-w-[1400px] w-full mx-auto">
+        <div className="flex-1 flex flex-col min-w-0">
+          <TopBar
+            activePage={activePage}
+            workspace={workspace}
+            activeScan={activeScan}
+            scanProgress={scanProgress}
+            onOpenMobileMenu={() => setMobileMenuOpen(true)}
+            onQuickScan={() => setActivePage('scan')}
+          />
+
+          <main className="flex-1 px-4 sm:px-6 lg:px-8 py-7 max-w-[1400px] w-full mx-auto">
+            <motion.div
+              key={activePage}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            >
           {activePage === 'dashboard' && (
             <DashboardPage
               scanHistory={scanHistory}
@@ -357,8 +366,10 @@ export default function App() {
               onClearHistory={handleClearAllHistory}
             />
           )}
-        </main>
+            </motion.div>
+          </main>
+        </div>
       </div>
-    </div>
+    </MotionConfig>
   );
 }
