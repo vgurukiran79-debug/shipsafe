@@ -1,0 +1,6 @@
+{
+  "name": "ShipSafe — Local-First Application Security Scanner",
+  "description": "Local-first browser-based static application security scanner with deterministic rules, ZIP extraction, confirm-to-apply remediation, and JSON/CSV reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
